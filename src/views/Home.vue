@@ -42,7 +42,7 @@
                 const {nav_arr,current_part} = this
                 const nav_index = nav_arr.indexOf(this.ucfirst(current_part))
                 return {
-                    transform:`translate3d(${nav_index*100}%,0,0)`
+                    transform:`translate3d(${nav_index*-100}vw,0,0)`
                 }
             }
         }
