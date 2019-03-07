@@ -1,6 +1,7 @@
 # VueWallpaper
 
 ## 基于Vue2.6、安卓壁纸API开发的壁纸应用
+[API](https://github.com/jokermonn/-Api/blob/master/adesk.md)
 
 ## Project setup
 ```
