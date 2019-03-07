@@ -69,7 +69,7 @@
         },
         destroyed(){
             window.cancelAnimationFrame(this.this.frame_index)
-            this.this.frame_index = null
+            this.frame_index = null
         },
         methods:{
             angle(angle){
