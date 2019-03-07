@@ -1,9 +1,7 @@
-import url from './url'
-const {tencent_location_service} = url
-
 
 export default {
-    TECENT_LOCATION:tencent_location_service,
+
+    TECENT_LOCATION:'tecent_location',
 
     HOT:'vertical?order=hot',
 
