@@ -68,7 +68,7 @@
             this.run(300)
         },
         destroyed(){
-            window.cancelAnimationFrame(this.this.frame_index)
+            window.cancelAnimationFrame(this.frame_index)
             this.frame_index = null
         },
         methods:{
