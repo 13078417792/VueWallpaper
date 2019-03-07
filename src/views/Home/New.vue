@@ -53,9 +53,6 @@
         },
         destroyed(){
             window.removeEventListener('scroll',this.handleScroll,true)
-        },
-        activated(){
-            console.log('activated')
         }
     })
     export default class New extends Vue {
