@@ -9,7 +9,7 @@
 
                     <div class="img-container">
                         <div class="img" :style="{
-                            backgroundImage:`url(${item.wp})`,
+                            backgroundImage:`url(${item.thumb})`,
                             backgroundSize:'cover'
                         }"></div>
                     </div>
