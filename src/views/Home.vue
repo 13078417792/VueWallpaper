@@ -68,6 +68,7 @@
         height:100vh;
         display:flex;
         overflow:hidden;
+        background-color:@bg-color;
 
         .container{
             overflow:hidden;
