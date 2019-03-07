@@ -1,4 +1,6 @@
-# eleme-vue
+# VueWallpaper
+
+## 基于Vue2.6、安卓壁纸API开发的壁纸应用
 
 ## Project setup
 ```
