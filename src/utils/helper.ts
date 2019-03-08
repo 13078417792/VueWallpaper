@@ -85,6 +85,12 @@ export function ucfirst(str:string) :string{
     return `${str[0].toLocaleUpperCase()}${str.slice(1)}`
 }
 
+export function JsonEncoded(data:object){
+    return Object.keys(data).map(el=>{
+        return `${el}=${data[el]}`
+    }).join('&')
+}
+
 export default {
-    position,get_city_name,ucfirst
+    position,get_city_name,ucfirst,JsonEncoded
 }
