@@ -1,34 +1,37 @@
 import axios from 'axios'
-import api from './api'
+import apis from './api'
+import {JsonEncoded} from './helper'
+
+export const api = apis
+
+const baseURL ='https://api.presstime.cn/'
 
 const instance = axios.create({
-    baseURL: 'https://api.presstime.cn/',
+    baseURL,
     timeout: 1000,
+    transformRequest:[function(data, headers){
+        if(data){
+            data = JsonEncoded(data)
+        }
+        return data;
+    }]
 });
 
-export const wallpaper = axios.create({
-    baseURL: 'https://api.presstime.cn/wallpaper/mobile/',
-    timeout: 1000
-})
-
-wallpaper.interceptors.response.use(function ({data}) {
+instance.interceptors.response.use(function (response) {
     // Do something with response data
-    if(data.msg!=='success'){
-        return Promise.reject(data.msg || data.error)
+    let {data,headers} = response
+    const sessionIdField = 'x-transmission-session-id'
+    const picasso = 'picasso:'
+
+    if(headers.hasOwnProperty(sessionIdField) && !!headers[sessionIdField] && headers[sessionIdField].indexOf(picasso)===0){
+        data.sessionId = headers[sessionIdField].split(':')[1]
     }
+
     return data;
 }, function (error) {
     // Do something with response error
     return Promise.reject(error.message || error.msg || error);
 });
 
-export function mobileFetch(api_name:string,params:object={}):Promise<object>{
-    if(!api.hasOwnProperty(api_name)){
-        throw new Error('API不存在')
-    }
-    const url = api[api_name]
-
-    return wallpaper.get(url,{params})
-}
 
 export default instance
