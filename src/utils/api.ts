@@ -1,13 +1,15 @@
 
 export default {
 
-    TECENT_LOCATION:'tecent_location',
+    location:'tecent_location',
 
-    HOT:'vertical?order=hot',
+    hot:'/wallpaper/mobile/vertical?order=hot',
 
-    NEW:'vertical?order=new',
+    new:'/wallpaper/mobile/vertical?order=new',
 
-    CATEGORY:'category',
+    category:'/wallpaper/mobile/category',
 
-    ALBUM:'album'
+    album:'/wallpaper/mobile/album',
+
+    login:'/wallpaper/std/v1/user/login'
 }
