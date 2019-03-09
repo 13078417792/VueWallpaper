@@ -6,6 +6,7 @@ import store from './store'
 import './registerServiceWorker'
 import "@assets/styles/common.less"
 import 'vant/lib/index.css'
+
 Vue.config.productionTip = false
 
 new Vue({

@@ -1,6 +1,6 @@
 <template>
     <nav id="bottom-nav">
-        <div :class="{part:true,on:key===$props.part}" v-for="(item,key) in icon" :key="key" @touchstart="toggle(key)">
+        <div :class="{part:true,on:$route.matched.length && $route.matched[0].name===key}" v-for="(item,key) in icon" :key="key" @touchstart="toggle(key)">
             <Icon :type="key" class="bottom-nav-icon" />
             <span class="name">
                 {{item}}
@@ -29,11 +29,19 @@
                     album:'专辑'
                 }
             }
+        },
+        created(){
+            // console.log(this.$route)
         }
     })
     export default class Nav extends Vue  {
 
         toggle(part){
+            if(part==='home'){
+                this.$router.push('/')
+            }else{
+                this.$router.push(`/${part}`)
+            }
             this.$emit('toggle',part)
         }
     }
@@ -58,6 +66,7 @@
         .part{
             width:100%/3*0.5;
             color:@icon-color;
+            text-align:center;
 
             .bottom-nav-icon{
                 font-size:1.8em;

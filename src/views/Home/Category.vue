@@ -35,7 +35,7 @@
 <script>
     import Icon from '@components/Icon'
     import ListWrapper from '@components/ListWrapper'
-    import {mobileFetch as http} from '@utils/http'
+    import http,{api} from '@utils/http'
     import TyImage from '@components/TyImage'
     export default {
         name: "Category",
@@ -52,7 +52,7 @@
         },
         methods:{
             fetch(){
-                http('CATEGORY').then(({res:{category}})=>{
+                http.get(api.category).then(({res:{category}})=>{
                     this.category = category
                 })
             }
@@ -109,6 +109,7 @@
                         border-radius:@border-radius;
                         overflow:hidden;
                         position:relative;
+                        box-shadow:0 0 5px 2px rgba(0,0,0,.2);
 
                         .category-pic{
                             width:100%;

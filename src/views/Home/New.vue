@@ -9,9 +9,9 @@
 
                     <div class="img-container">
                         <div class="img" :style="{
-                            backgroundImage:`url(${item.thumb})`,
-                            backgroundSize:'cover'
-                        }"></div>
+                                backgroundImage:`url(${item.thumb})`,
+                                backgroundSize:'cover'
+                            }"></div>
                     </div>
 
                 </div>
@@ -27,11 +27,9 @@
 
 <script>
     import {Component,Vue} from 'vue-property-decorator'
-    import {wallpaper} from '@utils/http'
-    import api from '@utils/api'
+    import http,{api} from '@utils/http'
     import Loading from '@components/Loading'
 
-    const http = wallpaper
     @Component({
         name: "New",
         components:{
@@ -42,17 +40,25 @@
                 newest:[],
                 current_page:1,
                 init:true,
-                loading:false
+                loading:false,
+                current_tab:'new'
             }
         },
         created(){
             this.loadingImageList(true)
+
         },
         mounted(){
             window.addEventListener('scroll',this.handleScroll,true)
         },
         destroyed(){
-            window.removeEventListener('scroll',this.handleScroll,true)
+            window.removeEventListener('scroll',this.handleScroll)
+        },
+        activated(){
+
+        },
+        deactivated(){
+
         }
     })
     export default class New extends Vue {
@@ -65,7 +71,7 @@
             this.$data.loading = true
             const limit = 30
             const {current_page} = this.$data
-            http.get(api.NEW,{
+            http.get(api.new,{
                 params:{
                     limit,
                     skip:limit*(current_page-1)
@@ -81,16 +87,13 @@
         }
 
         handleScroll(event){
-            const {target} = event
-            const scrollTop = target.scrollTop || 0
-            const {wrap} = this.$refs
-            if(!wrap) return;
-            const scrollHeight = wrap.clientHeight || 0
-            if(scrollHeight > 0 && scrollHeight - scrollTop <= target.offsetHeight && !this.$data.loading){
+            const {target:parent} = event
+            const {clientHeight} = parent
+            const {scrollTop,scrollHeight} = parent
+            if(scrollHeight > 0 && scrollHeight - scrollTop === clientHeight && !this.$data.loading){
                 this.$data.current_page += 1;
                 this.loadingImageList()
             }
-            // console.log([target])
         }
     }
 </script>
@@ -99,7 +102,7 @@
     @import "../../assets/styles/var.less";
 
     .home-new{
-        padding:0 1em;
+        padding:0 @padding;
         box-sizing:border-box;
         margin-top:2em;
         position:relative;
@@ -162,11 +165,13 @@
                     padding-right:@margin;
                     box-sizing:border-box;
 
+
                     .img{
                         width:100%;
                         height:100%;
                         border-radius:10px;
                         background-color:@border-color;
+                        box-shadow:0 0 5px 2px rgba(0,0,0,.2);
                     }
                 }
 
