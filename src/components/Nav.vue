@@ -26,7 +26,7 @@
                 icon:{
                     home:'首页',
                     category:'分类',
-                    album:'专辑'
+                    user:'我的'
                 }
             }
         },
@@ -36,14 +36,6 @@
     })
     export default class Nav extends Vue  {
 
-        toggle(part){
-            if(part==='home'){
-                this.$router.push('/')
-            }else{
-                this.$router.push(`/${part}`)
-            }
-            this.$emit('toggle',part)
-        }
     }
 </script>
 
