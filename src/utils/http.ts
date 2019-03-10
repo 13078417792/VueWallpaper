@@ -14,7 +14,10 @@ const instance = axios.create({
             data = JsonEncoded(data)
         }
         return data;
-    }]
+    }],
+    headers:{
+        "Content-Type":'application/x-www-form-urlencoded'
+    }
 });
 
 instance.interceptors.response.use(function (response) {
