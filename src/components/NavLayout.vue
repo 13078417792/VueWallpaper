@@ -6,9 +6,7 @@
         </div>
 
 
-        <div class="layout-nav-bottom">
-            <Nav />
-        </div>
+        <Nav class="layout-nav" />
 
     </div>
 
@@ -54,6 +52,9 @@
         overflow:hidden;
         position:relative;
         padding-bottom:@bottom-nav-height;
+        box-sizing:border-box;
+        // display:flex;
+        // flex-direction: column;
 
 
         .container{
@@ -63,12 +64,8 @@
             overflow-y:auto;
         }
 
-        .layout-nav-bottom{
-            position:sticky;
-            bottom:0;
-            left:0;
-            width:100%;
-            height:@bottom-nav-height;
+        .layout-nav{
+            position:absolute !important;
         }
 
     }
