@@ -36,6 +36,14 @@
     })
     export default class Nav extends Vue  {
 
+        toggle(part){
+            if(part==='home'){
+                this.$router.push('/')
+            }else{
+                this.$router.push(`/${part}`)
+            }
+            this.$emit('toggle',part)
+        }
     }
 </script>
 
