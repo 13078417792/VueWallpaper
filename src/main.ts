@@ -6,6 +6,8 @@ import store from './store'
 import './registerServiceWorker'
 import "@assets/styles/common.less"
 import 'vant/lib/index.css'
+import VueCookie from 'vue-cookie'
+Vue.use(VueCookie)
 
 Vue.config.productionTip = false
 
