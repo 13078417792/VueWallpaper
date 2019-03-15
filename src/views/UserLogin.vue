@@ -25,7 +25,6 @@
     import Icon from '@components/Icon';
     import Validator from 'async-validator'
     import {mapMutations} from 'vuex'
-    import request from '@utils/request'
 
     const validator = new Validator({
         username:[{required:true,message:'请输入用户名'}],
@@ -74,7 +73,7 @@
                             toast.clear()
                         })
                     }else{
-                        request.login(form.username,form.password,false).then(result=>{
+                        this.$request.login(form.username,form.password,false).then(result=>{
                             console.log(result)
                             this.setAuth(result.sessionId)
                             toast.clear();
