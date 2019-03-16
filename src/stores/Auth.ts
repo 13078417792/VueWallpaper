@@ -1,9 +1,5 @@
-import VueCookie from 'vue-cookie'
-
-const Auth = VueCookie.get('Auth') || ''
-
 const state = {
-    Auth
+
 }
 
 const mutations = {
@@ -15,8 +11,11 @@ const actions = {
 }
 
 const getters = {
-    is_login(state){
-        return !!state.Auth
+    auth(state, getters, rootState, rootGetters){
+        return rootGetters.hasOwnProperty('Storage/auth')?rootGetters['Storage/auth']:''
+    },
+    is_login(state, {auth}){
+        return !!auth
     }
 }
 
