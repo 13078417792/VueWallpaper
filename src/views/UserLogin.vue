@@ -47,7 +47,7 @@
         },
         methods:{
             ...mapMutations({
-                setAuth:'Auth/setAuth'
+                setAuth:'Storage/setAuth'
             }),
             submit(){
                 const {form} = this
@@ -74,7 +74,7 @@
                         })
                     }else{
                         this.$request.login(form.username,form.password,false).then(result=>{
-                            console.log(result)
+                            // console.log(result)
                             this.setAuth(result.sessionId)
                             toast.clear();
                             Toast.success({
@@ -87,7 +87,6 @@
                                 message:result.msg || result,
                                 duration:3000
                             })
-                            return;
                         })
                     }
                     this.errors = result_errors
