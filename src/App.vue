@@ -36,12 +36,6 @@
         overflow-x: hidden;
         background-color: @bg-color;
 
-        .app-nav {
-            position: sticky;
-            bottom: 0;
-            left: 0;
-        }
-
     }
 
 </style>
