@@ -8,9 +8,11 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.3.4",
+    "async-validator": "^1.10.1",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "install": "^0.12.2",
+    "js-cookie": "^2.2.0",
     "localforage": "^1.7.3",
     "lodash": "^4.17.11",
     "mint-ui": "^2.2.13",
@@ -21,6 +23,7 @@
     "vant": "^1.5.9",
     "vue": "^2.6.6",
     "vue-class-component": "^6.0.0",
+    "vue-cookie": "^1.1.4",
     "vue-property-decorator": "^7.0.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
