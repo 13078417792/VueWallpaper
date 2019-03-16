@@ -29,12 +29,14 @@
     import {Component,Vue} from 'vue-property-decorator'
     import http,{api} from '@utils/http'
     import Loading from '@components/Loading'
+    import SaveScrollMixin from '@src/mixins/save-scroll'
 
     @Component({
         name: "New",
         components:{
             Loading
         },
+        mixins:[SaveScrollMixin],
         data(){
             return {
                 newest:[],
@@ -90,7 +92,7 @@
             const {target:parent} = event
             const {clientHeight} = parent
             const {scrollTop,scrollHeight} = parent
-            if(scrollHeight > 0 && scrollHeight - scrollTop === clientHeight && !this.$data.loading){
+            if(scrollHeight > 0 && scrollTop>0 &&  scrollHeight - scrollTop === clientHeight && !this.$data.loading){
                 this.$data.current_page += 1;
                 this.loadingImageList()
             }
