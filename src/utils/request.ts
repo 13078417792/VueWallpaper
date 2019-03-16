@@ -8,7 +8,7 @@ type requestResult = {
     sessionId:string|null|undefined
 }|any
 
-export const login = function(email:string,pwd:string,autoSave:boolean=true) :promise<any>{
+export const login = function(email:string,pwd:string,autoSave:boolean=true) :Promise<requestResult>{
     return http.post(api.login,{
         email,passwd:pwd
     }).then((result:requestResult)=>{
