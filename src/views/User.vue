@@ -4,6 +4,9 @@
         <Title title="个人中心" />
 
         <template v-if="is_login">
+
+            <UserCenterEasyInfo :username="UserInfo.name" :avatar="UserInfo.avatar" />
+
             <Tabs v-model="active" height="300px">
                 <TabItem title="收藏">
                     <div class="">
@@ -32,10 +35,11 @@
     import Title from '@components/Title'
     import {mapGetters,mapState} from 'vuex'
     import Login from './UserLogin'
+    import UserCenterEasyInfo from '@components/UserCenterEasyInfo'
 
     export default {
         name: "User",
-        components:{Tabs,TabItem,Title,Login},
+        components:{Tabs,TabItem,Title,Login,UserCenterEasyInfo},
         data(){
             return {
                 active:'收藏'
@@ -44,14 +48,15 @@
         computed:{
             ...mapGetters({
                 is_login:'Auth/is_login',
-                auth:'Storage/auth'
+                auth:'Storage/auth',
+                UserInfo:'Storage/UserInfo'
             }),
             ...mapState({
                 cookies:'Storage/cookie'
             }),
         },
         created(){
-
+            console.log(this.UserInfo)
         }
     }
 </script>

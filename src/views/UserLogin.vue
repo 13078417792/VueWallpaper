@@ -47,7 +47,8 @@
         },
         methods:{
             ...mapMutations({
-                setAuth:'Storage/setAuth'
+                setAuth:'Storage/setAuth',
+                saveUserInfo:'Storage/saveUserInfo'
             }),
             submit(){
                 const {form} = this
@@ -74,13 +75,14 @@
                         })
                     }else{
                         this.$request.login(form.username,form.password,false).then(result=>{
-                            // console.log(result)
+                            console.log(result)
                             this.setAuth(result.sessionId)
                             toast.clear();
                             Toast.success({
                                 duration:3000,
                                 message:'登录成功'
                             })
+                            this.saveUserInfo(result.res)
                         }).catch(result=>{
                             toast.clear();
                             Toast.fail({
