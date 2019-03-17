@@ -7,8 +7,8 @@ import './registerServiceWorker'
 import "@assets/styles/common.less"
 import 'vant/lib/index.css'
 import VueCookie from 'vue-cookie'
-import request from '@utils/request'
-import http from '@utils/http'
+import request from './utils/request'
+import http from './utils/http'
 
 Vue.use(VueCookie)
 
