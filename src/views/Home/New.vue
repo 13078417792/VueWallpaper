@@ -1,5 +1,8 @@
 <template>
     <div class="home-new" @contextmenu="contextmenu">
+
+        <SingleAlbumPreview />
+
         <div class="wrap cl" ref="wrap">
 
             <div class="img-wrap" v-for="(item,key) in newest" :key="key" @contextmenu="contextmenu">
@@ -32,11 +35,12 @@
     import Loading from '@components/Loading'
     import SaveScrollMixin from '@src/mixins/save-scroll'
     import TyImage from '@components/TyImage'
+    import SingleAlbumPreview from '@components/SingleAlbumPreview'
 
     @Component({
         name: "New",
         components:{
-            Loading,TyImage
+            Loading,TyImage,SingleAlbumPreview
         },
         mixins:[SaveScrollMixin],
         data(){
