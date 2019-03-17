@@ -22,5 +22,8 @@ export default {
     horizontal_comment:'/wallpaper/std/v2/wallpaper/wallpaper/{$id}/comment',
 
     // 发表壁纸评论
-    comment:'/wallpaper/std/v2/user/wallpaper/wallpaper/{$id}/comment'
+    comment:'/wallpaper/std/v2/user/wallpaper/wallpaper/{$id}/comment',
+
+    // 获取专辑
+    album:'/wallpaper/std/v1/wallpaper/album'
 }
