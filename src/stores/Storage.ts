@@ -8,6 +8,11 @@ let ImageStore:LocalForage = Forage.createInstance({
     storeName:'image'
 })
 
+let UserStore:LocalForage = Forage.createInstance({
+    name:'VueWallpaper',
+    storeName:'user'
+})
+
 type storage = object
 
 type state = {
@@ -25,6 +30,34 @@ type image = {
     src:string
 }
 
+type UserInfo = {
+    id:number,
+    migrated: boolean,
+    super: boolean,
+    rank: number,
+    follower: number,
+    open: object,
+    title: array,
+    viptime: number,
+    visit: number,
+    score: {
+        score: number,
+        level: string
+    },
+    snlimit: string,
+    email: string,
+    avatar:string,
+    isvip: boolean,
+    auth: string,
+    medal: array,
+    desc: string,
+    name: string,
+    artist: boolean,
+    gender: string|number,
+    sn: number,
+    following: number
+}
+
 const driver = {
     asyncStorage:"IndexedDB",
     localStorageWrapper:"localStorage",
@@ -36,15 +69,18 @@ function init(){
     mapValues(cookies,function(value,key){
         state.cookie[key] = value
     })
-    ImageStore.iterate(function(value,key){
-        const cur_driver = driver[ImageStore.driver()]
-        state[cur_driver][key] = value
+    let stores = [ImageStore,UserStore]
+    stores.forEach((store:LocalForage)=>{
+        store.iterate(function(value,key){
+            const cur_driver = driver[store.driver()]
+            state[cur_driver][key] = value
+        })
     })
 }
 
 function getValue(state:state,name:string|number,defaults:any=null){
-    const {cookie,localStorage,sessionStorage}:{cookie:storage,localStorage:storage,sessionStorage:storage} = state
-    return cookie[name] || localStorage[name] || sessionStorage[name] || defaults
+    const {cookie,localStorage,sessionStorage,IndexedDB,WebSQL}:{cookie:storage,localStorage:storage,sessionStorage:storage,IndexedDB:storage,WebSQL:storage} = state
+    return cookie[name] || localStorage[name] || sessionStorage[name] || IndexedDB[name] || WebSQL[name] ||  defaults
 }
 
 /**
@@ -92,12 +128,17 @@ const getters = {
     auth(state:state){
         return getValue(state,'auth')
     },
-
+    UserInfo(state:state){
+        return getValue(state,'user_info')
+    }
 }
 
 const mutations = {
     setAuth(state:state,value:string){
         setValue(state,'auth',value,'cookie',{expires:1})
+    },
+    saveUserInfo(state:state,info:UserInfo){
+        setValue(state,'user_info',info,'IndexedDB',{},UserStore)
     },
     updateImageBase(state:state,data:image){
         setValue(state,data.src,data.dataUrl,'IndexedDB',{},ImageStore)
