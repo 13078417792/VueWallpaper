@@ -2,6 +2,7 @@ import axios from 'axios'
 // import SparkMd5 from 'spark-md5'
 import {Md5} from 'ts-md5/dist/md5';
 import data from './data'
+import {mapValues} from 'lodash'
 
 export function createTecentMapSig(location:string) :any{
     // https://lbs.qq.com/FAQ/key_faq.html#6
@@ -91,6 +92,127 @@ export function JsonEncoded(data:object){
     }).join('&')
 }
 
+export function get_response_error(error:any){
+    const type = get_type(error)
+    if(type==='error'){
+        return error.message || '未知错误'
+    }else if(type==='string'){
+        return error
+    }else if(type==='object'){
+        return error.msg || error.message || error.error
+    }else{
+        return '未知错误'
+    }
+}
+
+export function get_type(data:any){
+    return toString.call(data).replace(/\[object ([\da-z]+)]/ig,'$1').toLowerCase()
+}
+
+type BlobResponse = {
+    data:Blob
+}
+
+type AjaxImageResponsePromise = string|Blob|object
+
+/**
+ * 异步加载图片
+ * @param {string} src
+ * @param {boolean} is_base
+ * @returns {Promise<AjaxImageResponsePromise>}
+ */
+export function ajax_img(src:string,is_base:boolean=true) :Promise<AjaxImageResponsePromise>{
+    return axios.get(src,{
+        responseType:'blob'
+    }).then((data:BlobResponse)=>{
+        const blob:Blob|null = data.data
+        if(!is_base && blob){
+            return Promise.resolve(blob)
+        }
+        return new Promise((resolve,reject)=>{
+            const reader:FileReader = new FileReader()
+            reader.addEventListener('load',function(){
+                if(typeof reader.result==='string'){
+                    resolve(reader.result)
+                }else{
+                    reject('图片转码base64失败')
+                }
+            },false)
+            reader.addEventListener('error',function(){
+                reject(reader.error)
+            },false)
+            reader.readAsDataURL(blob)
+        })
+
+    }).then((result:AjaxImageResponsePromise)=>{
+        return Promise.resolve(result)
+    }).catch(error=>{
+        return Promise.reject(get_response_error(error))
+    })
+}
+
+// window.ajax_img = ajax_img
+
+/**
+ * 图片转码base64
+ * @param {string | HTMLImageElement} target 图片地址或图片元素实例
+ * @param {boolean} forceImageElement   是否强制生成图片元素实例再转码
+ * @returns {Promise<string>}
+ */
+export async function base64_img(target:string|HTMLImageElement,forceImageElement:boolean=false) :Promise<string>{
+    if(forceImageElement && typeof target==='string'){
+        const src = target
+        try{
+            target = await createImage(src,{
+                crossOrigin:'anonymous'
+            })
+        }catch(err){
+            return Promise.reject(get_response_error(err))
+        }
+
+    }
+
+    if(typeof target==='string'){
+        return ajax_img(target)
+    }else{
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        canvas.width = target.width
+        canvas.height = target.height
+        if(!ctx){
+            return Promise.reject('编码base64失败')
+        }
+        return Promise.resolve({target,ctx}).then(({target,ctx})=>{
+            ctx.drawImage(target,0,0)
+            const base:string = canvas.toDataURL()
+            return Promise.resolve(base)
+        })
+    }
+}
+
+/**
+ * 创建图片元素实例对象
+ * @param {string} src  图片链接
+ * @param {object} opt  实例对象属性
+ * @returns {Promise<HTMLImageElement>}
+ */
+export function createImage(src:string,opt:object={}) :Promise<HTMLImageElement>{
+    return new Promise((resolve,reject)=>{
+        const image:HTMLImageElement = new Image()
+        mapValues(opt,function(value,key){
+            image.setAttribute(key,value)
+        })
+        image.src = src
+        image.addEventListener('load',function(){
+            resolve(image)
+        })
+        image.addEventListener('error',function(err){
+            reject(err)
+        })
+    })
+
+}
+
 export default {
-    position,get_city_name,ucfirst,JsonEncoded
+    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage
 }
