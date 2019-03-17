@@ -8,10 +8,11 @@
                 <div class="image-preview" >
 
                     <div class="img-container">
-                        <div class="img" :style="{
-                                backgroundImage:`url(${item.thumb})`,
-                                backgroundSize:'cover'
-                            }"></div>
+                        <!--<div class="img" :style="{-->
+                                <!--backgroundImage:`url(${item.thumb})`,-->
+                                <!--backgroundSize:'cover'-->
+                            <!--}"></div>-->
+                        <TyImage class="img" :src="item.thumb" />
                     </div>
 
                 </div>
@@ -30,11 +31,12 @@
     import http,{api} from '@utils/http'
     import Loading from '@components/Loading'
     import SaveScrollMixin from '@src/mixins/save-scroll'
+    import TyImage from '@components/TyImage'
 
     @Component({
         name: "New",
         components:{
-            Loading
+            Loading,TyImage
         },
         mixins:[SaveScrollMixin],
         data(){
@@ -167,13 +169,13 @@
                     padding-right:@margin;
                     box-sizing:border-box;
 
-
                     .img{
                         width:100%;
                         height:100%;
                         border-radius:10px;
                         background-color:@border-color;
                         box-shadow:0 0 5px 2px rgba(0,0,0,.2);
+                        overflow:hidden;
                     }
                 }
 
