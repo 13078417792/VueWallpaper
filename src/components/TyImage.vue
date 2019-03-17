@@ -1,8 +1,7 @@
 <template>
     <section class="image-container" >
-        <div class="image" :style="style">
-
-        </div>
+        <div class="image" :style="style" v-if="!is_img"></div>
+        <img class="ys-img" :src="src" v-else>
     </section>
 </template>
 
@@ -18,6 +17,10 @@
             radius:{
                 type:String,
                 default:'0px'
+            },
+            is_img:{
+                type:Boolean,
+                default:false
             }
         },
         data(){
@@ -75,6 +78,11 @@
             background-color:@border-color;
             width:100%;
             height:100%;
+        }
+
+        .ys-img{
+            background-color:@border-color;
+            max-width:100%;
         }
     }
 </style>
