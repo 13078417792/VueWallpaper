@@ -213,6 +213,16 @@ export function createImage(src:string,opt:object={}) :Promise<HTMLImageElement>
 
 }
 
+/**
+ * 计算跳过的数量（请求时用）
+ * @param {number} p 页码
+ * @param {number} limit 每页数据量
+ * @returns {number}
+ */
+export function computed_skip(p:number,limit:number):number{
+    return (p-1)*limit
+}
+
 export default {
-    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage
+    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage,computed_skip
 }
