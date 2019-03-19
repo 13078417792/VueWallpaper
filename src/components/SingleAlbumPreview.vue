@@ -1,9 +1,9 @@
 <template>
     <div class="single-album-preview" v-if="album">
-        <Title title="专题" :level="4" />
+        <Title title="专辑" :level="4" />
         <router-link class="more-album" to="/album">更多>></router-link>
         <div class="album-cover-container">
-            <TyImage class="album-cover" :src="album.lcover" :is_img="false" />
+            <TyImage class="album-cover" :src="album.lcover" :is_img="false" @click.native="$emit('checked',album.id)" />
         </div>
 
     </div>
@@ -34,7 +34,6 @@
                     if(result){
                         this.album = result
                     }
-                    console.log(result)
                 })
             }
         }
