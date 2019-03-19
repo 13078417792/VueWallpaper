@@ -6,7 +6,7 @@
         </div>
 
 
-        <Nav class="layout-nav" />
+        <Nav class="layout-nav" v-if="!!$route.meta.nav" />
 
     </div>
 
