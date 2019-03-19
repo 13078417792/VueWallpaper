@@ -1,12 +1,12 @@
 <template>
-    <div class="nav-layout">
+    <div :class="{'nav-layout':true,'full-height':!show_nav}">
 
         <div class="container" ref="container">
             <slot></slot>
         </div>
 
 
-        <Nav class="layout-nav" v-if="!!$route.meta.nav" />
+        <Nav class="layout-nav" v-if="show_nav" />
 
     </div>
 
@@ -22,6 +22,11 @@
         data(){
             return {
                 scrollTop:{}
+            }
+        },
+        computed:{
+            show_nav(){
+                return !!this.$route.meta.nav
             }
         },
         watch:{
@@ -55,6 +60,10 @@
         box-sizing:border-box;
         // display:flex;
         // flex-direction: column;
+
+        &.full-height{
+            padding-bottom:0;
+        }
 
 
         .container{
