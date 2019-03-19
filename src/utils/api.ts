@@ -25,5 +25,8 @@ export default {
     comment:'/wallpaper/std/v2/user/wallpaper/wallpaper/{$id}/comment',
 
     // 获取专辑
-    album:'/wallpaper/std/v1/wallpaper/album'
+    album:'/wallpaper/std/v1/wallpaper/album',
+
+    // 专辑下的壁纸
+    album_wallpaper:'/wallpaper/std/v1/wallpaper/album/{$id}/wallpaper'
 }
