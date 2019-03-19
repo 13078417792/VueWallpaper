@@ -37,7 +37,7 @@ type UserInfo = {
     rank: number,
     follower: number,
     open: object,
-    title: array,
+    title: Array<string>,
     viptime: number,
     visit: number,
     score: {
@@ -49,7 +49,7 @@ type UserInfo = {
     avatar:string,
     isvip: boolean,
     auth: string,
-    medal: array,
+    medal: Array<string>,
     desc: string,
     name: string,
     artist: boolean,
