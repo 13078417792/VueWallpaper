@@ -27,5 +27,5 @@
 </script>
 
 <style scoped lang="less">
-    @import "//at.alicdn.com/t/font_1070235_avv8b3ovfcq.css";
+    @import "//at.alicdn.com/t/font_1070235_34zhcrzmja2.css";
 </style>
