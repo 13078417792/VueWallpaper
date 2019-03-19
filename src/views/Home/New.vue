@@ -1,7 +1,7 @@
 <template>
     <div class="home-new" @contextmenu="contextmenu">
 
-        <SingleAlbumPreview />
+        <SingleAlbumPreview @checked="go_album_detail" />
 
         <div class="wrap cl" ref="wrap">
 
@@ -54,7 +54,6 @@
         },
         created(){
             this.loadingImageList(true)
-
         },
         mounted(){
             window.addEventListener('scroll',this.handleScroll,true)
@@ -69,7 +68,21 @@
 
         }
     })
+
     export default class New extends Vue {
+
+        go_album_detail(id){
+            if(!id){
+                this.$toast('操作失败')
+            }
+            this.$router.push({
+                name:'album-detail',
+                params:{
+                    id
+                }
+            })
+        }
+
         contextmenu(e){
             e.preventDefault()
             e.stopPropagation()
