@@ -157,9 +157,9 @@ export function ajax_img(src:string,is_base:boolean=true) :Promise<AjaxImageResp
  * 图片转码base64
  * @param {string | HTMLImageElement} target 图片地址或图片元素实例
  * @param {boolean} forceImageElement   是否强制生成图片元素实例再转码
- * @returns {Promise<string>}
+ * @returns {Promise<AjaxImageResponsePromise|string>}
  */
-export async function base64_img(target:string|HTMLImageElement,forceImageElement:boolean=false) :Promise<string>{
+export async function base64_img(target:string|HTMLImageElement,forceImageElement:boolean=false) :Promise<AjaxImageResponsePromise|string>{
     if(forceImageElement && typeof target==='string'){
         const src = target
         try{
