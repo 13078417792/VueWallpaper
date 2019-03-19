@@ -15,20 +15,20 @@
 
         </header>
 
-        <Scrolll class="module-content" :horizontal="$props['horizontal-scroll']">
+        <Scroll class="module-content" :horizontal="$props['horizontal-scroll']">
             <slot></slot>
-        </Scrolll>
+        </Scroll>
 
     </div>
 </template>
 
 <script>
     import Icon from './Icon'
-    import Scrolll from './Scroll'
+    import Scroll from './Scroll'
     export default {
         name: "ModulePage",
         components:{
-            Icon,Scrolll
+            Icon,Scroll
         },
         props:{
             title:{
