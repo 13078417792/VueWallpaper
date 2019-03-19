@@ -1,26 +1,32 @@
 <template>
-    <div class="scroll-wrapper" ref="wrapper">
-        <div class="scroll-content">
-            <slot></slot>
-        </div>
+    <div class="scroll-wrapper" ref="wrapper" :style="scrollCssValue">
+        <slot></slot>
     </div>
 </template>
 
 <script>
+    import SaveScrollMixin from '../mixins/save-scroll'
     export default {
         name: "Scroll",
-        data(){
-            return {
-                position:{
-                    x:0,y:0
-                }
+        mixins:[SaveScrollMixin],
+        props:{
+            horizontal:{
+                type:Boolean,
+                default:false,
+            },
+            vertical:{
+                type:Boolean,
+                default:true
             }
         },
-        activated(){
-            console.log('activated')
-        },
-        deactivated(){
-            console.log(1)
+        computed:{
+            scrollCssValue(){
+                const props = this.$props
+                return {
+                    'overflow-x':!!props.horizontal?'auto':'hidden',
+                    'overflow-y':!!props.vertical?'auto':'hidden'
+                }
+            }
         }
     }
 </script>
@@ -30,12 +36,11 @@
     .scroll-wrapper{
         width:100%;
         height:100%;
-        overflow-x:hidden;
-        overflow-y:auto;
+        overflow:auto;
 
-        .scroll-content{
-            width:100%;
-        }
+        /*.scroll-content{*/
+            /*width:100%;*/
+        /*}*/
     }
 
 </style>
