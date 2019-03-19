@@ -10,7 +10,9 @@ import VueCookie from 'vue-cookie'
 import request from './utils/request'
 import http from './utils/http'
 import helper from './utils/helper'
+import { Toast } from 'vant';
 
+Vue.use(Toast)
 Vue.use(VueCookie)
 
 Vue.config.productionTip = false
