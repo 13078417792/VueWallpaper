@@ -34,12 +34,21 @@ const SaveScroll = {
             updatePosition:'ScrollPosition/updateY'
         }),
         getParentElement(){
-            const parent = this.parent
-            if(!this.$el.parentElement){
-                return parent || null
+            if(this.$options.name==='Scroll'){
+                const parent = this.parent
+                if(!this.$el){
+                    return parent || null
+                }
+                this.parent = this.$el
+                return this.$el
+            }else{
+                const parent = this.parent
+                if(!this.$el.parentElement){
+                    return parent || null
+                }
+                this.parent = this.$el.parentElement
+                return this.$el.parentElement
             }
-            this.parent = this.$el.parentElement
-            return this.$el.parentElement
         },
         // 还原上次位置
         reductionPosition(){
@@ -60,7 +69,6 @@ const SaveScroll = {
         handler(){
             const parent = this.getParentElement()
             if(!parent) return
-            // console.log(this,parent.scrollTop)
             this.updatePosition({uid:this._uid,position:parent.scrollTop})
         },
         addListener(){
