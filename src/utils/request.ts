@@ -3,6 +3,49 @@ import api from './api'
 import VueCookie from 'vue-cookie'
 import {computed_skip as com_skip} from './helper'
 
+function default_params(params:object){
+    const def = {
+        limit:10,
+        first:1,
+        adult:false,
+        order:'new'
+    }
+
+    return Object.assign({},def,params)
+}
+
+type response = {
+    code:number,
+    res:object,
+    message?:string,
+    msg?:string,
+    sessionId?:string
+}
+
+function handleResult(result:response){
+    if(result.code!==0){
+        return {
+            success:false,
+            result:result.res,
+            message:result.message || result.msg || ''
+        }
+    }else{
+        return {
+            success:true,
+            result:result.res,
+            message:result.message || result.msg || ''
+        }
+    }
+}
+
+// 替换URL参数占位符
+function replace_url_params(url:string,name:string,value:string|number){
+    if(typeof value==='number'){
+        value = value.toString()
+    }
+    return url.replace(`{$${name}}`,value)
+}
+
 type requestResult = {
     code:number,
     msg:string,
@@ -57,10 +100,22 @@ export const album_list = function(params:album_list_params_type={
     })
 }
 
-export const album_detail = function(){
+export const album_detail = async function(id:string,params:object){
+    if(!id) return Promise.reject('获取专辑内容失败')
+    let {album_wallpaper} = api
+    // album_wallpaper = album_wallpaper.replace('{$id}',id)
+    album_wallpaper = replace_url_params(album_wallpaper,'id',id)
+    params = default_params(params)
 
+    // 这里挖个坑，找个时间做个声明文件，重新定义响应的类型约束
+    let result:any = await http.get(album_wallpaper,{
+        params
+    })
+    result = handleResult(result)
+    return result;
+    // return http.get('')
 }
 
 export default {
-    login,album_list
+    login,album_list,album_detail
 }
