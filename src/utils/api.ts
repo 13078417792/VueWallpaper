@@ -9,7 +9,7 @@ export default {
 
     category:'/wallpaper/mobile/category',
 
-    album:'/wallpaper/mobile/album',
+    // album:'/wallpaper/mobile/album',
 
     login:'/wallpaper/std/v1/user/login',
 
