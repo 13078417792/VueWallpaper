@@ -47,7 +47,7 @@
             af.on('swipe',this.handleSwipe)
         },
         updated(){
-            this.init()
+            // this.init()
         },
         methods:{
             handleSwipe({direction}){
@@ -77,10 +77,13 @@
                 this.setWrapStyle({
                     transform:`translate3d(${100/count*this.currentIndex*-1}%,0,0)`
                 })
+                this.$emit('toggle',this.currentIndex)
             },
             init(){
                 this.children = []
-                this.getAvailableChildren()
+                this.getAvailableChildren(function(){},()=>{
+                    this.$emit('toggle',this.currentIndex)
+                })
             },
             setWrapStyle(css){
                 if(this.$helper.get_type(css)!=='object') return false;
