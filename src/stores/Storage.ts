@@ -1,7 +1,7 @@
 import {mapValues} from 'lodash'
 import Vue from 'vue'
 import {Commit} from 'vuex'
-import {get_type} from '../utils/helper'
+import helper from '../utils/helper'
 
 const Cookies = require('js-cookie')
 import Forage from 'localforage'
@@ -14,6 +14,11 @@ let ImageStore:LocalForage = Forage.createInstance({
 let UserStore:LocalForage = Forage.createInstance({
     name:'VueWallpaper',
     storeName:'user'
+})
+
+let RankRecordStore:LocalForage = Forage.createInstance({
+    name:'VueWallpaper',
+    storeName:'rank_record'
 })
 
 type storage = object
@@ -81,7 +86,9 @@ function getValue(state:state,name:string|number,defaults:any=null){
  * @param {object} opt 属性设置
  * @param {LocalForage | null} store localforage实例对应不同的数据库
  */
-function setValue(state:state,name:string|number,value:any,types:types="cookie",opt:object={},store:LocalForage|null=null){
+function setValue(state:state,name:string|number,value:any,types:types="cookie",opt:{
+    expires?:number|string
+}={},store?:LocalForage){
     if(types==='cookie'){
         Cookies.set(name,value,opt)
     }else if(["IndexedDB","WebSQL"].includes(types) && store){
@@ -107,8 +114,6 @@ const state = {
 
 }
 
-// const storage_types = Object.keys(state)
-
 const getters = {
     getValue:(state:state)=>(name:string)=>{
         const {cookie,localStorage,sessionStorage,IndexedDB,WebSQL}:{cookie:storage,localStorage:storage,sessionStorage:storage,IndexedDB:storage,WebSQL:storage} = state
@@ -119,22 +124,37 @@ const getters = {
     },
     UserInfo(state:state){
         return getValue(state,'user_info')
+    },
+
+    // 点赞记录
+    rank_record(state:state){
+        return getValue(state,'rank_record',[])
+    },
+
+    // 查询指定的壁纸是否已点赞过
+    is_rank:(state:state,getters)=>{
+        const {rank_record} = getters
+        return (wallpaper_id:string)=> rank_record.includes(wallpaper_id)
     }
 }
 
 type updateDataType = {
     type:types,
     name:string,
+    parentNode:string|number|undefined|null|void,
     value:any
 }
 
 const mutations = {
+    // 通用的提交方法
     update(state:state,data:updateDataType){
-
-        if(get_type(data.value)==='object'){
-            Vue.set(state[data.type],data.name,data.value)
+        const {parentNode,type,name,value} = data
+        if(typeof parentNode==='number' || !!parentNode){
+            Vue.set(state[type],parentNode,{})
+            Vue.set(state[type][parentNode],name,value)
         }else{
-            state[data.type][data.name] = data.value
+            console.log(type,name,value)
+            Vue.set(state[type],name,value)
         }
     },
     setAuth(state:state,value:string){
@@ -145,7 +165,25 @@ const mutations = {
     },
     updateImageBase(state:state,data:image){
         setValue(state,data.src,data.dataUrl,'IndexedDB',{},ImageStore)
+    },
+    addRandRecord(state:state,id:string) {
+        // console.log(id)
+        let rank_record:Array<string> = getValue(state, 'rank_record')
+        const user_info = getValue(state, 'user_info')
+        if(!user_info) return
+        const {id:uid} = user_info
+        if(!rank_record){
+            rank_record = []
+        }
+        if(!rank_record.includes(id)){
+            rank_record.push(id)
+        }
+        setValue(state,uid,rank_record,'IndexedDB',{},RankRecordStore)
     }
+
+
+
+
 }
 
 const actions = {
@@ -153,8 +191,10 @@ const actions = {
      * 从本地存储更新数据到Store
      * @param {Commit} commit
      */
-    updateFromLocal({commit}:{commit:Commit}){
+    updateFromLocal({commit,getters}:{commit:Commit,getters:any}){
         const cookies:storage = Cookies.get() || Object.create(null)
+
+        // 获取登录token
         mapValues(cookies,function(key,value){
             commit('update',{
                 type:'cookie',
@@ -162,19 +202,60 @@ const actions = {
                 value
             })
         })
-        let stores = [UserStore]
-        stores.forEach((store:LocalForage)=>{
-            store.iterate(function(value,key){
+
+        // 稍后需要做未登录处理
+
+        // 更新分两个步骤
+        // 先更新当前用户的登录信息，例如zhouchijian此账户的登录信息，以获取用户的UID、昵称等信息
+        // 然后更新zhouchijian账户下的操作记录、对应的数据
+        // 例如zhouchijian账户曾经的点赞记录
+
+        // 登录的用户的基本信息
+        let baseStores = [{
+            store:UserStore
+        }]
+        const baseUpdatePromise = baseStores.map((
+            {store,parent}:{store:LocalForage,parent?:string|number}
+            )=>{
+            return store.iterate(function(value,key){
                 const cur_driver = driver[store.driver()]
                 commit('update',{
                     type:cur_driver,
                     name:key,
+                    parentNode:parent,
                     value
                 })
-            }).then(()=>{}).catch(err=>{
+            }).then(()=>{
+                return Promise.resolve()
+            }).catch(err=>{
                 console.warn('从本地存储更新数据到StorageStore时出错',err)
+                return Promise.reject()
             })
         })
+
+
+        // 所有用户基本信息更新到Store后再获取各自用户对应自己的数据（例如，某用户的点赞记录）
+        Promise.all(baseUpdatePromise).then(()=>{
+            const uid = getters.UserInfo.id
+            let allUserDataStores = [{
+                store:RankRecordStore,
+                name:'rank_record'
+            }]
+            allUserDataStores.forEach(async ({store,name}:{store:LocalForage,name:string|number})=>{
+                let result = await store.getItem(uid)
+                const cur_driver = driver[store.driver()]
+                if(result){
+                    commit('update',{
+                        type:cur_driver,
+                        name,
+                        value:result
+                    })
+                }
+            })
+        })
+
+
+
     }
 }
 
