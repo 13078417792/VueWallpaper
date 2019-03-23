@@ -238,10 +238,10 @@ export function tips(message:string,duration:number=3000){
  * @param {string | number} name
  * @returns {any}
  */
-export function has(data:object|Array<any>,name:string|number){
+export function hasKey(data:object|Array<any>,name:string|number){
     return data.hasOwnProperty(name)
 }
 
 export default {
-    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage,computed_skip,tips,has
+    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage,computed_skip,tips,hasKey
 }
