@@ -172,7 +172,7 @@ const actions = {
                     value
                 })
             }).then(()=>{}).catch(err=>{
-                console.warn('从本地存储更新数据到Store时出错',err)
+                console.warn('从本地存储更新数据到StorageStore时出错',err)
             })
         })
     }
