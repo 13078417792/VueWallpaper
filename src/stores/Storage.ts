@@ -1,5 +1,8 @@
 import {mapValues} from 'lodash'
 import Vue from 'vue'
+import {Commit} from 'vuex'
+import {get_type} from '../utils/helper'
+
 const Cookies = require('js-cookie')
 import Forage from 'localforage'
 
@@ -64,20 +67,6 @@ const driver = {
     webSQLStorage:"WebSQL"
 }
 
-function init(){
-    const cookies:storage = Cookies.get() || Object.create(null)
-    mapValues(cookies,function(value,key){
-        state.cookie[key] = value
-    })
-    let stores = [ImageStore,UserStore]
-    stores.forEach((store:LocalForage)=>{
-        store.iterate(function(value,key){
-            const cur_driver = driver[store.driver()]
-            state[cur_driver][key] = value
-        })
-    })
-}
-
 function getValue(state:state,name:string|number,defaults:any=null){
     const {cookie,localStorage,sessionStorage,IndexedDB,WebSQL}:{cookie:storage,localStorage:storage,sessionStorage:storage,IndexedDB:storage,WebSQL:storage} = state
     return cookie[name] || localStorage[name] || sessionStorage[name] || IndexedDB[name] || WebSQL[name] ||  defaults
@@ -133,7 +122,21 @@ const getters = {
     }
 }
 
+type updateDataType = {
+    type:types,
+    name:string,
+    value:any
+}
+
 const mutations = {
+    update(state:state,data:updateDataType){
+
+        if(get_type(data.value)==='object'){
+            Vue.set(state[data.type],data.name,data.value)
+        }else{
+            state[data.type][data.name] = data.value
+        }
+    },
     setAuth(state:state,value:string){
         setValue(state,'auth',value,'cookie',{expires:1})
     },
@@ -146,10 +149,34 @@ const mutations = {
 }
 
 const actions = {
-
+    /**
+     * 从本地存储更新数据到Store
+     * @param {Commit} commit
+     */
+    updateFromLocal({commit}:{commit:Commit}){
+        const cookies:storage = Cookies.get() || Object.create(null)
+        mapValues(cookies,function(key,value){
+            commit('update',{
+                type:'cookie',
+                name:key,
+                value
+            })
+        })
+        let stores = [UserStore]
+        stores.forEach((store:LocalForage)=>{
+            store.iterate(function(value,key){
+                const cur_driver = driver[store.driver()]
+                commit('update',{
+                    type:cur_driver,
+                    name:key,
+                    value
+                })
+            }).then(()=>{}).catch(err=>{
+                console.warn('从本地存储更新数据到Store时出错',err)
+            })
+        })
+    }
 }
-
-init()
 
 export default {
     state,getters,mutations,actions,namespaced:true
