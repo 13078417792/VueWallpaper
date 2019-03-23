@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Toast } from 'vant';
 // import SparkMd5 from 'spark-md5'
 import {Md5} from 'ts-md5/dist/md5';
 import data from './data'
@@ -223,6 +224,14 @@ export function computed_skip(p:number,limit:number):number{
     return (p-1)*limit
 }
 
+export function tips(message:string,duration:number=3000){
+    Toast({
+        message,
+        duration,
+        position:'bottom'
+    })
+}
+
 export default {
-    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage,computed_skip
+    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage,computed_skip,tips
 }
