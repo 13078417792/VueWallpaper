@@ -14,9 +14,20 @@
 
 <script>
     import NavLayout from "@components/NavLayout"
+    import {mapActions} from 'vuex'
+
     export default {
         components:{
             NavLayout
+        },
+        created(){
+            // updateFromLocal
+            this.updateStoreStorageFromLocal()
+        },
+        methods:{
+            ...mapActions({
+                updateStoreStorageFromLocal:'Storage/updateFromLocal'
+            })
         }
     }
 </script>
