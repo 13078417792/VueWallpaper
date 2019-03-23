@@ -72,8 +72,29 @@ const driver = {
     webSQLStorage:"WebSQL"
 }
 
+const hasKey = helper.hasKey
+
 function getValue(state:state,name:string|number,defaults:any=null){
     const {cookie,localStorage,sessionStorage,IndexedDB,WebSQL}:{cookie:storage,localStorage:storage,sessionStorage:storage,IndexedDB:storage,WebSQL:storage} = state
+    // if(hasKey(cookie,name)){
+    //     return cookie[name]
+    // }
+    // if(hasKey(localStorage,name)){
+    //     return localStorage[name]
+    // }
+    // if(hasKey(sessionStorage,name)){
+    //     return sessionStorage[name]
+    // }
+    // if(hasKey(IndexedDB,name)){
+    //     return IndexedDB[name]
+    // }
+    // if(hasKey(WebSQL,name)){
+    //     return WebSQL[name]
+    // }
+    //
+    // return defaults;
+    //
+    // return hasKey(cookie,name) || localStorage[name] || sessionStorage[name] || IndexedDB[name] || WebSQL[name] ||  defaults
     return cookie[name] || localStorage[name] || sessionStorage[name] || IndexedDB[name] || WebSQL[name] ||  defaults
 }
 
@@ -153,7 +174,6 @@ const mutations = {
             Vue.set(state[type],parentNode,{})
             Vue.set(state[type][parentNode],name,value)
         }else{
-            console.log(type,name,value)
             Vue.set(state[type],name,value)
         }
     },
@@ -195,7 +215,7 @@ const actions = {
         const cookies:storage = Cookies.get() || Object.create(null)
 
         // 获取登录token
-        mapValues(cookies,function(key,value){
+        mapValues(cookies,function(value,key){
             commit('update',{
                 type:'cookie',
                 name:key,
