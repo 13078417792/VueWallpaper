@@ -232,6 +232,16 @@ export function tips(message:string,duration:number=3000){
     })
 }
 
+/**
+ * 查询对象、数组是否存在某键
+ * @param {object | Array<any>} data
+ * @param {string | number} name
+ * @returns {any}
+ */
+export function has(data:object|Array<any>,name:string|number){
+    return data.hasOwnProperty(name)
+}
+
 export default {
-    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage,computed_skip,tips
+    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage,computed_skip,tips,has
 }
