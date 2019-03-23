@@ -5,6 +5,14 @@
         <div class="album-cover-container">
             <TyImage class="album-cover" :src="album.lcover" :is_img="false" @click.native="$emit('checked',album.id)" />
         </div>
+        <section @click="$emit('checked',album.id)" >
+            <p class="name overflow">
+                {{album.name}}
+            </p>
+            <p class="desc overflow">
+                {{album.desc}}
+            </p>
+        </section>
 
     </div>
 </template>
@@ -33,6 +41,7 @@
                     const result = album.length?album[0]:null
                     if(result){
                         this.album = result
+                        console.log(result)
                     }
                 })
             }
@@ -70,6 +79,26 @@
                 width:100%;
                 height:100%;
             }
+        }
+
+        section{
+
+            p{
+                margin:0;
+            }
+
+            .name{
+                font-size:.95em;
+                margin:-5px 0 5px 0;
+                font-weight:800;
+            }
+
+            .desc{
+                font-size:.8em;
+                color:@desc-font;
+                margin:0 0 10px;
+            }
+
         }
     }
 </style>
