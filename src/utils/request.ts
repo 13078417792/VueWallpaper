@@ -116,6 +116,26 @@ export const album_detail = async function(id:string,params:object){
     // return http.get('')
 }
 
+export const get_comment = function(id:string,uid:string='',is_wallpaper:boolean=true){
+    const url = is_wallpaper?api.horizontal_comment:api.vertical_comment
+    return http.post(replace_url_params(url,'id',id),{
+        uid
+    })
+}
+
+/**
+ * 点赞
+ * @param {string} id   资源ID
+ * @param {boolean} is_vertical 是否竖屏
+ * @returns {AxiosPromise<any>}
+ */
+export const set_good = function(id:string,is_vertical:boolean=true){
+    return http.post(api.set_good,{
+        source_id:id,
+        source_type:is_vertical?'vertical':'wallpaper'
+    })
+}
+
 export default {
-    login,album_list,album_detail
+    login,album_list,album_detail,get_comment,set_good
 }
