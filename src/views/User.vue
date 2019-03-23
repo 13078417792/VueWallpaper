@@ -5,7 +5,7 @@
 
         <template v-if="is_login">
 
-            <UserCenterEasyInfo :username="UserInfo.name" :avatar="UserInfo.avatar" />
+            <UserCenterEasyInfo :username="UserInfo?UserInfo.name:''" :avatar="UserInfo?UserInfo.avatar:''" />
 
             <Tabs v-model="active" height="300px">
                 <TabItem title="收藏">
@@ -56,7 +56,7 @@
             }),
         },
         created(){
-            console.log(this.UserInfo)
+            // console.log(this.UserInfo)
         }
     }
 </script>
