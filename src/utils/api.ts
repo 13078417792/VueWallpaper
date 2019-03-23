@@ -28,5 +28,16 @@ export default {
     album:'/wallpaper/std/v1/wallpaper/album',
 
     // 专辑下的壁纸
-    album_wallpaper:'/wallpaper/std/v1/wallpaper/album/{$id}/wallpaper'
+    album_wallpaper:'/wallpaper/std/v1/wallpaper/album/{$id}/wallpaper',
+
+    // 点赞
+    set_good:'/wallpaper/std/v2/source/up',
+
+    // 收藏横屏壁纸
+    collect_wallpaper:'/wallpaper/std/v1/wallpaper/wallpaper/{$id}/favor',
+
+    // 收藏竖屏壁纸
+    collect_vertical:'/wallpaper/std/v1/vertical/vertical/{$id}/favor',
+
+
 }
