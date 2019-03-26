@@ -34,6 +34,7 @@
                 return {
                     backgroundImage:`url(${props.src})`,
                     backgroundSize:'cover',
+                    backgroundPosition:'center',
                     borderRadius:props.radius
                 }
             },
