@@ -158,6 +158,9 @@ const getters = {
     is_rank:(state:state,getters)=>{
         const {rank_record} = getters
         return (wallpaper_id:string)=> rank_record.includes(wallpaper_id)
+    },
+    is_login(state:state,getters){
+        return !!getters.auth
     }
 }
 
@@ -215,6 +218,8 @@ const actions = {
      * @param {Commit} commit
      */
     updateFromLocal({commit,getters}:{commit:Commit,getters:any}){
+
+
         const cookies:storage = Cookies.get() || Object.create(null)
 
         // 获取登录token
@@ -226,9 +231,13 @@ const actions = {
             })
         })
 
+        const {is_login} = getters
+
+        if(!is_login) return;
 
 
         // 稍后需要做未登录处理
+        // 20190326 已简单处理未登录
 
         // 更新分两个步骤
         // 先更新当前用户的登录信息，例如zhouchijian此账户的登录信息，以获取用户的UID、昵称等信息
