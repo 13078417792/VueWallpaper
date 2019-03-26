@@ -143,12 +143,14 @@ const getters = {
     auth(state:state){
         return getValue(state,'auth')
     },
-    UserInfo(state:state){
+    UserInfo(state:state,getters,rootState,rootGetters){
+        if(!rootGetters['Auth/is_login']) return null
         return getValue(state,'user_info')
     },
 
     // 点赞记录
-    rank_record(state:state){
+    rank_record(state:state,getters,rootState,rootGetters){
+        if(!rootGetters['Auth/is_login']) return []
         return getValue(state,'rank_record',[])
     },
 
@@ -178,6 +180,7 @@ const mutations = {
         }
     },
     setAuth(state:state,value:string){
+
         setValue(state,'auth',value,'cookie',{expires:1})
     },
     saveUserInfo(state:state,info:UserInfo){
@@ -222,6 +225,8 @@ const actions = {
                 value
             })
         })
+
+
 
         // 稍后需要做未登录处理
 
