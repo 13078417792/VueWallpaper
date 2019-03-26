@@ -14,8 +14,8 @@ const getters = {
     auth(state, getters, rootState, rootGetters){
         return rootGetters.hasOwnProperty('Storage/auth')?rootGetters['Storage/auth']:''
     },
-    is_login(state, {auth}){
-        return !!auth
+    is_login(state, getters, rootState, rootGetters){
+        return rootGetters['Storage/is_login']
     }
 }
 
