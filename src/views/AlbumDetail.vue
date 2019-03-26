@@ -57,7 +57,8 @@
                 }
             },
             ...mapGetters({
-                is_rank:'Storage/is_rank'
+                is_rank:'Storage/is_rank',
+                is_login:'Storage/is_login'
             })
         },
         methods:{
@@ -66,17 +67,21 @@
             }),
             likegood(id){
                 // console.log(id)
+                if(!this.is_login){
+                    this.$helper.tips('请先登录')
+                    return;
+                }
                 if(this.is_rank(id)){
                     this.$helper.tips('你已经点赞过了')
                     return;
                 }
                 this.addRandRecord(id)
                 this.$request.set_good(id,false).then(()=>{
-
                     this.$helper.tips('点赞成功')
                 }).catch(()=>{
                     this.$helper.tips('点赞失败')
                 })
+
             },
             handleTouchToggle(index){
                 const detail = this.wallpaper[index]
