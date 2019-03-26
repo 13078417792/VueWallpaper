@@ -242,6 +242,17 @@ export function hasKey(data:object|Array<any>,name:string|number){
     return data.hasOwnProperty(name)
 }
 
+// get_type函数别名
+export const gettype = get_type
+
+/**
+ * 创建空对象
+ * @param {object} prototype
+ */
+export function newObj(prototype?:object){
+    return Object.create(!!prototype?prototype:null)
+}
+
 export default {
-    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage,computed_skip,tips,hasKey
+    position,get_city_name,ucfirst,JsonEncoded,base64_img,ajax_img,get_type,createImage,computed_skip,tips,hasKey,gettype,newObj
 }
