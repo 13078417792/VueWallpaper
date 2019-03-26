@@ -24,7 +24,7 @@
     import { CellGroup,Field,Button,Cell,Toast  } from 'vant';
     import Icon from '@components/Icon';
     import Validator from 'async-validator'
-    import {mapMutations} from 'vuex'
+    import {mapMutations,mapActions} from 'vuex'
 
     const validator = new Validator({
         username:[{required:true,message:'请输入用户名'}],
@@ -49,6 +49,8 @@
             ...mapMutations({
                 setAuth:'Storage/setAuth',
                 saveUserInfo:'Storage/saveUserInfo',
+            }),
+            ...mapActions({
                 updateFromLocal:'Storage/updateFromLocal'
             }),
             submit(){
