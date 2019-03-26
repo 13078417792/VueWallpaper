@@ -216,6 +216,7 @@ const actions = {
     /**
      * 从本地存储更新数据到Store
      * @param {Commit} commit
+     * @param {any} getters
      */
     updateFromLocal({commit,getters}:{commit:Commit,getters:any}){
 
