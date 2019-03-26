@@ -48,7 +48,8 @@
         methods:{
             ...mapMutations({
                 setAuth:'Storage/setAuth',
-                saveUserInfo:'Storage/saveUserInfo'
+                saveUserInfo:'Storage/saveUserInfo',
+                updateFromLocal:'Storage/updateFromLocal'
             }),
             submit(){
                 const {form} = this
@@ -83,6 +84,7 @@
                                 message:'登录成功'
                             })
                             this.saveUserInfo(result.res)
+                            this.updateFromLocal()
                         }).catch(result=>{
                             toast.clear();
                             Toast.fail({
