@@ -193,7 +193,6 @@ const mutations = {
         setValue(state,data.src,data.dataUrl,'IndexedDB',{},ImageStore)
     },
     addRandRecord(state:state,id:string) {
-        // console.log(id)
         let rank_record:Array<string> = getValue(state, 'rank_record')
         const user_info = getValue(state, 'user_info')
         if(!user_info) return
